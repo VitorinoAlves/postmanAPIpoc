@@ -1,0 +1,396 @@
+{
+	"info": {
+		"_postman_id": "5f6e1d7d-8336-4bf5-9ce6-72e7496e65f9",
+		"name": "Get Characters Data",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "616647"
+	},
+	"item": [
+		{
+			"name": "Get hero data",
+			"item": [
+				{
+					"name": "Get characters list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"pm.variables.set(\"heroId\", responseJson.data.results[0].id);\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}characters?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}characters"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a single character",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"pm.variables.set(\"heroComic\", responseJson.data.results[0].comics.items[0].name);\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Checking if returned the right hero\", function(){\r",
+									"    pm.expect(responseJson.data.results[0].id).to.eql(parseInt(pm.variables.get(\"heroId\")));\r",
+									"    pm.expect(responseJson.data.results).to.have.lengthOf(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}characters/{{heroId}}?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}characters"
+							],
+							"path": [
+								"{{heroId}}"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get character comic",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"const comic = responseJson.data.results.find(m => m.title === pm.variables.get(\"heroComic\"));\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check if the comic in the previous request is in this response\", function(){\r",
+									"    pm.expect(comic.title).to.eql(pm.variables.get(\"heroComic\"));\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}characters/{{heroId}}/comics?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}characters"
+							],
+							"path": [
+								"{{heroId}}",
+								"comics"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Event data",
+			"item": [
+				{
+					"name": "Get Event list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"pm.variables.set(\"eventId\", responseJson.data.results[0].id);\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}events?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}events"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Checking if returned the right event\", function(){\r",
+									"    pm.expect(responseJson.data.results[0].id).to.eql(parseInt(pm.variables.get(\"eventId\")));\r",
+									"    pm.expect(responseJson.data.results).to.have.lengthOf(1);\r",
+									"});\r",
+									"\r",
+									"pm.variables.set(\"eventName\", responseJson.data.results[0].title);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}events/{{eventId}}?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}events"
+							],
+							"path": [
+								"{{eventId}}"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get event characters",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.variables.set(\"eventHeroId\", responseJson.data.results[0].id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}events/{{eventId}}/characters?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}events"
+							],
+							"path": [
+								"{{eventId}}",
+								"characters"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get hero from event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseJson = pm.response.json();\r",
+									"const event = responseJson.data.results[0].events.items.find(m => m.name === pm.variables.get(\"eventName\"));\r",
+									"\r",
+									"pm.test(\"Check status code 200\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Checking if the hero has the event\", function(){\r",
+									"    pm.expect(event.name).to.eql(pm.variables.get(\"eventName\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}characters/{{eventHeroId}}?ts={{timestemp}}&apikey={{publicKey}}&hash={{hash}}",
+							"host": [
+								"{{base_url}}characters"
+							],
+							"path": [
+								"{{eventHeroId}}"
+							],
+							"query": [
+								{
+									"key": "ts",
+									"value": "{{timestemp}}"
+								},
+								{
+									"key": "apikey",
+									"value": "{{publicKey}}"
+								},
+								{
+									"key": "hash",
+									"value": "{{hash}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
